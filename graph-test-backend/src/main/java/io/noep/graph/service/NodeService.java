@@ -1,4 +1,8 @@
-package io.noep.graph;
+package io.noep.graph.service;
+
+import io.noep.graph.utils.IdGenerator;
+import io.noep.graph.utils.SequentialIdGenerater;
+import io.noep.graph.domain.Node;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -10,7 +14,7 @@ import java.util.stream.Collectors;
 public class NodeService {
 
     /**
-     * node를 순회하면서 id, rootId, parentId를 기록
+     * node를 순회하면서 weight, rootId, parentId를 기록
      * 최상위 node는 rootId, parentId = 0으로 설정한다
      *
      * @param node
@@ -19,12 +23,12 @@ public class NodeService {
      */
     public Node traverse(Node node, int rootId, IdGenerator idGenerator) {
 
-        node.setId(idGenerator.getId());
+        node.setWeight(idGenerator.getId());
         //System.out.println(node);
 
         node.getChildren().forEach(childNode -> {
-            int computedRootId = rootId == 0 ? node.getId() : rootId;
-            childNode.setParentId(node.getId());
+            int computedRootId = rootId == 0 ? node.getWeight() : rootId;
+            childNode.setParentId(node.getWeight());
             childNode.setRootId(computedRootId);
             this.traverse(childNode, computedRootId, idGenerator);
         });
@@ -42,7 +46,7 @@ public class NodeService {
 
         node.setChildren(
                 node.getChildren().stream()
-                        .filter(childNode -> childNode.getId() != id)
+                        .filter(childNode -> childNode.getWeight() != id)
                         .collect(Collectors.toList()));
 
         node.getChildren().forEach(childNode -> {
@@ -76,7 +80,7 @@ public class NodeService {
 
         List<Node> findedTargets = mergeTargets.stream()
                 .map(id -> {
-                    Node target = this.find(node, targetNode -> targetNode.getId() == id);
+                    Node target = this.find(node, targetNode -> targetNode.getWeight() == id);
                     try {
                         return (Node) target.clone();
                     } catch (CloneNotSupportedException e) {
@@ -90,7 +94,7 @@ public class NodeService {
         Node newNode = new Node("new-node");
         newNode.getChildren().addAll(findedTargets);
 
-        this.find(node, targetNode -> targetNode.getId() == parentNodeId)
+        this.find(node, targetNode -> targetNode.getWeight() == parentNodeId)
                 .getChildren().add(newNode);
 
         this.traverse(node, 0, new SequentialIdGenerater());

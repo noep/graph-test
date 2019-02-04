@@ -1,4 +1,4 @@
-package io.noep.graph;
+package io.noep.graph.utils;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

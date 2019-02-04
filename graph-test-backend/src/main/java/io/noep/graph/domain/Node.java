@@ -1,11 +1,18 @@
-package io.noep.graph;
+package io.noep.graph.domain;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Document
 public class Node implements Cloneable {
 
-    private int id;
+    @Id
+    private String id;
+
+    private int weight;
 
     private String name;
 
@@ -22,12 +29,12 @@ public class Node implements Cloneable {
 
     private List<Node> children = new ArrayList<>();
 
-    public int getId() {
-        return id;
+    public int getWeight() {
+        return weight;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setWeight(int weight) {
+        this.weight = weight;
     }
 
     public String getName() {
@@ -69,18 +76,18 @@ public class Node implements Cloneable {
 
         Node node = (Node) o;
 
-        return id == node.id;
+        return weight == node.weight;
     }
 
     @Override
     public int hashCode() {
-        return id;
+        return weight;
     }
 
     @Override
     public String toString() {
         return "Node{" +
-                "id=" + id +
+                "weight=" + weight +
                 ", name='" + name + '\'' +
                 ", parentId=" + parentId +
                 ", rootId=" + rootId +

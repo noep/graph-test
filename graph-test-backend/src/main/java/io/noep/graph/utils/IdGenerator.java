@@ -1,4 +1,4 @@
-package io.noep.graph;
+package io.noep.graph.utils;
 
 /**
  * Desc  :

@@ -2,7 +2,10 @@ package io.noep.graph;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.noep.graph.domain.Node;
+import io.noep.graph.service.NodeService;
 import io.noep.graph.utils.NodeTestUtils;
+import io.noep.graph.utils.SequentialIdGenerater;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -43,21 +46,21 @@ public class NodeTest {
         Node traverse = nodeService.traverse(node, 0, new SequentialIdGenerater());
 
         //assert Ids
-        assertThat(node.getId()).isEqualTo(1);
-        assertThat(node.getChildren().get(0).getId()).isEqualTo(2);
-        assertThat(node.getChildren().get(1).getId()).isEqualTo(3);
-        assertThat(node.getChildren().get(2).getId()).isEqualTo(4);
-        assertThat(node.getChildren().get(3).getId()).isEqualTo(5);
-        assertThat(node.getChildren().get(4).getId()).isEqualTo(6);
-        assertThat(node.getChildren().get(4).getChildren().get(0).getId()).isEqualTo(7);
-        assertThat(node.getChildren().get(4).getChildren().get(0).getChildren().get(0).getId()).isEqualTo(8);
-        assertThat(node.getChildren().get(4).getChildren().get(0).getChildren().get(1).getId()).isEqualTo(9);
-        assertThat(node.getChildren().get(4).getChildren().get(0).getChildren().get(1).getChildren().get(0).getId()).isEqualTo(10);
-        assertThat(node.getChildren().get(4).getChildren().get(0).getChildren().get(1).getChildren().get(1).getId()).isEqualTo(11);
-        assertThat(node.getChildren().get(4).getChildren().get(0).getChildren().get(1).getChildren().get(2).getId()).isEqualTo(12);
-        assertThat(node.getChildren().get(4).getChildren().get(0).getChildren().get(2).getId()).isEqualTo(13);
-        assertThat(node.getChildren().get(4).getChildren().get(1).getId()).isEqualTo(14);
-        assertThat(node.getChildren().get(4).getChildren().get(2).getId()).isEqualTo(15);
+        assertThat(node.getWeight()).isEqualTo(1);
+        assertThat(node.getChildren().get(0).getWeight()).isEqualTo(2);
+        assertThat(node.getChildren().get(1).getWeight()).isEqualTo(3);
+        assertThat(node.getChildren().get(2).getWeight()).isEqualTo(4);
+        assertThat(node.getChildren().get(3).getWeight()).isEqualTo(5);
+        assertThat(node.getChildren().get(4).getWeight()).isEqualTo(6);
+        assertThat(node.getChildren().get(4).getChildren().get(0).getWeight()).isEqualTo(7);
+        assertThat(node.getChildren().get(4).getChildren().get(0).getChildren().get(0).getWeight()).isEqualTo(8);
+        assertThat(node.getChildren().get(4).getChildren().get(0).getChildren().get(1).getWeight()).isEqualTo(9);
+        assertThat(node.getChildren().get(4).getChildren().get(0).getChildren().get(1).getChildren().get(0).getWeight()).isEqualTo(10);
+        assertThat(node.getChildren().get(4).getChildren().get(0).getChildren().get(1).getChildren().get(1).getWeight()).isEqualTo(11);
+        assertThat(node.getChildren().get(4).getChildren().get(0).getChildren().get(1).getChildren().get(2).getWeight()).isEqualTo(12);
+        assertThat(node.getChildren().get(4).getChildren().get(0).getChildren().get(2).getWeight()).isEqualTo(13);
+        assertThat(node.getChildren().get(4).getChildren().get(1).getWeight()).isEqualTo(14);
+        assertThat(node.getChildren().get(4).getChildren().get(2).getWeight()).isEqualTo(15);
 
         // assert parentIds
         assertThat(node.getParentId()).isEqualTo(0);
@@ -113,9 +116,9 @@ public class NodeTest {
     public void find() {
         Node node = nodeService.traverse(NodeTestUtils.generate(), 0, new SequentialIdGenerater());
         print(node);
-        Node node1 = nodeService.find(node, target -> target.getId() == 1);
-        Node node2 = nodeService.find(node, target -> target.getId() == 2);
-        Node node9 = nodeService.find(node, target -> target.getId() == 9);
+        Node node1 = nodeService.find(node, target -> target.getWeight() == 1);
+        Node node2 = nodeService.find(node, target -> target.getWeight() == 2);
+        Node node9 = nodeService.find(node, target -> target.getWeight() == 9);
 
         assertThat(node1.getName()).isEqualTo("1");
         assertThat(node1.getChildren().size()).isEqualTo(5);
@@ -129,11 +132,9 @@ public class NodeTest {
         Node node = nodeService.traverse(NodeTestUtils.generate(), 0, new SequentialIdGenerater());
         print(node);
 
-        Node merge = nodeService.merge(node, 3, Arrays.asList(8, 9));
+        nodeService.merge(node, 3, Arrays.asList(8, 9));
 
-        print(merge);
-
-
+        print(node);
     }
 
 
