@@ -72,7 +72,7 @@ public class NodeService {
         return null;
     }
 
-    public Node merge(Node node, int parentNodeId, List<Integer> mergeTargets) {
+    public void merge(Node node, int parentNodeId, List<Integer> mergeTargets) {
 
         List<Node> findedTargets = mergeTargets.stream()
                 .map(id -> {
@@ -87,11 +87,12 @@ public class NodeService {
 
         mergeTargets.forEach(integer -> this.remove(node, integer));
 
+        Node newNode = new Node("new-node");
+        newNode.getChildren().addAll(findedTargets);
+
         this.find(node, targetNode -> targetNode.getId() == parentNodeId)
-                .getChildren().addAll(findedTargets);
+                .getChildren().add(newNode);
 
-        Node traverse = this.traverse(node, 0, new SequentialIdGenerater());
-
-        return traverse;
+        this.traverse(node, 0, new SequentialIdGenerater());
     }
 }

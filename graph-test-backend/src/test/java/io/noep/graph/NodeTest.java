@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.noep.graph.utils.NodeTestUtils;
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class NodeTest {
@@ -39,7 +41,7 @@ public class NodeTest {
     public void traverseTest() {
         Node node = NodeTestUtils.generate();
         Node traverse = nodeService.traverse(node, 0, new SequentialIdGenerater());
-        
+
         //assert Ids
         assertThat(node.getId()).isEqualTo(1);
         assertThat(node.getChildren().get(0).getId()).isEqualTo(2);
@@ -120,6 +122,18 @@ public class NodeTest {
         assertThat(node2.getName()).isEqualTo("11");
         assertThat(node9.getName()).isEqualTo("1512");
         assertThat(node9.getChildren().size()).isEqualTo(3);
+    }
+
+    @Test
+    public void mergeTest() {
+        Node node = nodeService.traverse(NodeTestUtils.generate(), 0, new SequentialIdGenerater());
+        print(node);
+
+        Node merge = nodeService.merge(node, 3, Arrays.asList(8, 9));
+
+        print(merge);
+
+
     }
 
 
