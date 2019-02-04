@@ -1,5 +1,6 @@
 package io.noep.graph;
 
+import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -19,7 +20,7 @@ public class NodeService {
     public Node traverse(Node node, int rootId, IdGenerator idGenerator) {
 
         node.setId(idGenerator.getId());
-        System.out.println(node);
+        //System.out.println(node);
 
         node.getChildren().forEach(childNode -> {
             int computedRootId = rootId == 0 ? node.getId() : rootId;
@@ -32,11 +33,12 @@ public class NodeService {
 
     /**
      * id에 해당하는 노드 제외
+     *
      * @param node
      * @param id
      * @return
      */
-    public Node remove(Node node, int id) {
+    public void remove(Node node, int id) {
 
         node.setChildren(
                 node.getChildren().stream()
@@ -46,11 +48,11 @@ public class NodeService {
         node.getChildren().forEach(childNode -> {
             this.remove(childNode, id);
         });
-        return node;
     }
 
     /**
      * 조건에 해당하는 노드 찾기
+     *
      * @param node
      * @param predicate
      * @return
@@ -68,5 +70,28 @@ public class NodeService {
             }
         }
         return null;
+    }
+
+    public Node merge(Node node, int parentNodeId, List<Integer> mergeTargets) {
+
+        List<Node> findedTargets = mergeTargets.stream()
+                .map(id -> {
+                    Node target = this.find(node, targetNode -> targetNode.getId() == id);
+                    try {
+                        return (Node) target.clone();
+                    } catch (CloneNotSupportedException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }).collect(Collectors.toList());
+
+        mergeTargets.forEach(integer -> this.remove(node, integer));
+
+        this.find(node, targetNode -> targetNode.getId() == parentNodeId)
+                .getChildren().addAll(findedTargets);
+
+        Node traverse = this.traverse(node, 0, new SequentialIdGenerater());
+
+        return traverse;
     }
 }

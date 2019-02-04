@@ -3,7 +3,7 @@ package io.noep.graph;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Node {
+public class Node implements Cloneable {
 
     private int id;
 
@@ -85,5 +85,10 @@ public class Node {
                 ", parentId=" + parentId +
                 ", rootId=" + rootId +
                 '}';
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }
