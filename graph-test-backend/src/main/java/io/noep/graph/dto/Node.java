@@ -1,15 +1,11 @@
-package io.noep.graph.domain;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+package io.noep.graph.dto;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Document
+//node는 웹상에 트리구조를 표현하기 위한 DTO이지, 데이터베이스에 저장하기 적합한 구조는 아닌것같음
 public class Node implements Cloneable {
 
-    @Id
     private String id;
 
     private int weight;

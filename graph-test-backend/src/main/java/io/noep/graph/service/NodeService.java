@@ -2,7 +2,7 @@ package io.noep.graph.service;
 
 import io.noep.graph.utils.IdGenerator;
 import io.noep.graph.utils.SequentialIdGenerater;
-import io.noep.graph.domain.Node;
+import io.noep.graph.dto.Node;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -16,6 +16,7 @@ public class NodeService {
     /**
      * node를 순회하면서 weight, rootId, parentId를 기록
      * 최상위 node는 rootId, parentId = 0으로 설정한다
+     * fixme  최상위 node의 rootId가 0이면 쿼리할 때 불편, 같은 값을 두고, boolean isRoot() 를 추가하는 게 좋지않을까
      *
      * @param node
      * @param rootId

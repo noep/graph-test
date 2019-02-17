@@ -1,6 +1,6 @@
 package io.noep.graph.utils;
 
-import io.noep.graph.domain.Node;
+import io.noep.graph.dto.Node;
 
 import java.util.ArrayList;
 import java.util.Arrays;

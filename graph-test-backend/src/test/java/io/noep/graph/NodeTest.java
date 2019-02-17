@@ -2,11 +2,12 @@ package io.noep.graph;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.noep.graph.domain.Node;
+import io.noep.graph.dto.Node;
 import io.noep.graph.service.NodeService;
 import io.noep.graph.utils.NodeTestUtils;
 import io.noep.graph.utils.SequentialIdGenerater;
-import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
@@ -18,6 +19,7 @@ public class NodeTest {
 
     private NodeService nodeService = new NodeService();
 
+    @DisplayName("노드 생성 테스트")
     @Test
     public void createNodeTest() {
 
@@ -40,6 +42,7 @@ public class NodeTest {
         assertThat(node.getChildren().get(4).getChildren().get(2).getName()).isEqualTo("153");
     }
 
+    @DisplayName("노드 순회 테스트")
     @Test
     public void traverseTest() {
         Node node = NodeTestUtils.generate();
@@ -98,6 +101,9 @@ public class NodeTest {
         print(traverse);
     }
 
+
+
+    @DisplayName("노드 삭제 테스트")
     @Test
     public void removeTest() {
         Node node = nodeService.traverse(NodeTestUtils.generate(), 0, new SequentialIdGenerater());
@@ -112,6 +118,7 @@ public class NodeTest {
         print(node);
     }
 
+    @DisplayName("노드 검색 테스트")
     @Test
     public void find() {
         Node node = nodeService.traverse(NodeTestUtils.generate(), 0, new SequentialIdGenerater());
@@ -127,6 +134,7 @@ public class NodeTest {
         assertThat(node9.getChildren().size()).isEqualTo(3);
     }
 
+    @DisplayName("노드 병합 테스트")
     @Test
     public void mergeTest() {
         Node node = nodeService.traverse(NodeTestUtils.generate(), 0, new SequentialIdGenerater());
